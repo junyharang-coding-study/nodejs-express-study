@@ -1,3 +1,41 @@
+const express = require('express')
+const app = express()
+const port = 3000
+const fs = require('fs');
+const template = require('./lib/template.js');
+
+// 이 Code를 화살표 함수를 쓴 것이 10 ~ 12번째 줄
+// app.get('/', function(req, res) {
+//   return res.send('Hello World!')
+// })
+
+app.get('/', (request, response) => {  // get은 HTTP Method get
+  
+  fs.readdir('./data', function(error, filelist) {
+
+    let title = 'Welcome';
+    let description = "Hello, Juny Harang";
+    let list = template.list(filelist);
+    let html = template.HTML(title, list,
+      `<h2>${title}</h2>${description}`,
+      `<a href="/create">create</a>`
+      );
+
+      response.send(html);
+
+  });
+
+});
+
+app.get('/page', (req, res) => {  //  get은 HTTP Method get
+  res.send('/page');
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+});
+
+/*
 var http = require('http');
 var fs = require('fs');
 var url = require('url');
@@ -141,3 +179,4 @@ var app = http.createServer(function(request,response){
     }
 });
 app.listen(3000);
+*/
